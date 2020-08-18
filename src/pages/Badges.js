@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import BadgesList from '../components/BadgesList'
+import BadgesList from '../components/BadgesList';
+import PageLoading from '../components/PageLoading';
+import PageError from '../components/PageError';
 import {Link} from 'react-router-dom'
+import api from "../api"
 import './styles/Badges.css'
 import ConfLogo from '../images/badge-header.svg'
 
@@ -8,21 +11,21 @@ const Badges = () => {
 
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
-    const [error,setError] = useState(false)
+    const [error,setError] = useState(null)
 
 
-    const fetchData = ()=>{
+    const fetchData = async ()=>{
         setLoading(true)
-        setError(false)
+        setError(null)
         try{
-            const datos=[]
+            const datos = await api.badges.list()
             setData(datos)
             setLoading(false)
-            setError(false)
+            setError(null)
         }
-        catch{
+        catch (error){
             setLoading(false)
-            setError(true)
+            setError(error)
         }
     }
 
@@ -32,7 +35,8 @@ const Badges = () => {
 
     return ( 
         <React.Fragment>
-            {loading?<div>Loading...</div>:<>
+            {loading?<PageLoading/>:<>
+            {error? <PageError error={error}/> :<>
             <div className="Badges">
                 <div className="Badges__hero">
                     <div className="Badges__container">
@@ -49,7 +53,7 @@ const Badges = () => {
                         <BadgesList badges={data}/>
                     </div>
                 </div>
-            </div></>}
+            </div></>}</>}
         </React.Fragment>
      );
 }

@@ -1,8 +1,15 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom'
 import './styles/BadgesList.css';
 const BadgesList = (props) => {
     return ( 
+    <React.Fragment>
+      {props.badges.length===0 ? 
+        <div>
+          <h3>No badges were found</h3>
+          <Link className="btn btn-primary" to="/badges/new">Create New Badge</Link>
+        </div>
+      :
         <div className="BadgesList">
             <ul className="list-unstyled">
                 {props.badges.map(badge=>{
@@ -14,6 +21,8 @@ const BadgesList = (props) => {
                 })}
             </ul>
         </div>
+      }
+    </React.Fragment>
      );
 }
  
