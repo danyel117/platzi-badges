@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BadgesList from '../components/BadgesList';
 import PageLoading from '../components/PageLoading';
 import PageError from '../components/PageError';
+import MiniLoader from '../components/MiniLoader'
 import {Link} from 'react-router-dom'
 import api from "../api"
 import './styles/Badges.css'
@@ -12,6 +13,7 @@ const Badges = () => {
     const [data,setData] = useState([])
     const [loading,setLoading] = useState(true)
     const [error,setError] = useState(null)
+    const [intervalId,setIntervalID]=useState()
 
 
     const fetchData = async ()=>{
@@ -31,11 +33,16 @@ const Badges = () => {
 
     useEffect(()=>{
         fetchData()
+        const interv=setInterval(fetchData,5000)
+        setIntervalID(interv)
+        return function cleanup(){
+            clearInterval(intervalId)
+        }
     },[])
 
     return ( 
         <React.Fragment>
-            {loading?<PageLoading/>:<>
+            {loading && !data?<PageLoading/>:<>
             {error? <PageError error={error}/> :<>
             <div className="Badges">
                 <div className="Badges__hero">
@@ -51,6 +58,7 @@ const Badges = () => {
                 <div className="Badges__list">
                     <div className="Badges__container">
                         <BadgesList badges={data}/>
+                        {loading && <MiniLoader/>}
                     </div>
                 </div>
             </div></>}</>}
