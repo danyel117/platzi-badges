@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Gravatar from './Gravatar'
 import './styles/BadgesList.css';
 const BadgesList = (props) => {
     return ( 
@@ -15,7 +16,9 @@ const BadgesList = (props) => {
                 {props.badges.map(badge=>{
                     return(
                         <li key={badge.id}>
-                            <BadgesListItem badge={badge} />
+                            <Link className="text-reset text-decoration-none" to={`/badges/${badge.id}/edit`}>
+                              <BadgesListItem badge={badge} />
+                            </Link>
                         </li>
                     )
                 })}
@@ -32,11 +35,8 @@ const BadgesListItem = (props)=>{
 
     return(
         <div className="BadgesListItem">
-          <img
-            className="BadgesListItem__avatar"
-            src={props.badge.avatarUrl}
-            alt={`${props.badge.first_name} ${props.badge.last_name}`}
-          />
+
+          <Gravatar className="BadgesListItem__avatar" email={props.badge.email} />
 
           <div>
             <strong>

@@ -6,15 +6,11 @@ const BadgeForm = (props) => {
         console.log("button pressed");
     }
 
-    const handleSubmit = (e)=>{
-        e.preventDefault();
-        console.log(props.formData)
-    }
 
     return (
         <div>
-            <h1>New Attendant</h1>
-            <form onSubmit={handleSubmit}> 
+            <h1>{props.new?"New ":"Edit "} Attendant</h1>
+            <form onSubmit={props.onSubmit}> 
                 <div className="form-group">
                     <label>First Name</label>
                     <input value={props.formData.first_name} onChange={props.handleChange} className="form-control" type="text" name="first_name"></input>
